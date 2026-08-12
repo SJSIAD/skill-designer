@@ -1,7 +1,7 @@
 # Skill Designer · 技能设计师
 
-一个把「用户想法」变成规范、可安装的 Codex 技能的中英双语引导式设计技能。内置脚手架生成、零依赖校验器和避坑清单。
-A bilingual guided skill that turns an idea into a well-structured, installable Codex skill, with bundled scaffolding, a dependency-free validator, and a pitfall checklist.
+一个把「用户想法」变成规范、可安装的 SKILL.md 技能的中英双语引导式设计技能，面向 SKILL.md 生态（Codex、Claude Code 等）。内置脚手架生成、零依赖校验器和避坑清单。
+A bilingual guided skill for the SKILL.md ecosystem that turns an idea into a well-structured, installable SKILL.md skill, with bundled scaffolding, a dependency-free validator, and a pitfall checklist.
 
 ## 功能特性 / Features
 
@@ -10,6 +10,7 @@ A bilingual guided skill that turns an idea into a well-structured, installable 
 - 零依赖校验：不需要 PyYAML，任何 Python 3 环境都能跑 / Dependency-free validation: no PyYAML, runs on plain Python 3
 - 避坑清单：交付前自动自查常见错误 / Pitfall checklist: self-review of common mistakes before delivery
 - 中英双语文档 / Bilingual (Chinese + English) documentation
+- SKILL.md 生态：同一份技能兼容 Codex、Claude Code 等 / SKILL.md ecosystem: one skill works with Codex, Claude Code, and other compatible runtimes
 
 ## 目录结构 / Structure
 
@@ -30,13 +31,21 @@ skill-designer/
 
 ## 安装 / Install
 
-把 `skill-designer` 文件夹复制到技能目录（默认 `~/.codex/skills`，或 `$CODEX_HOME/skills`）：
-Copy the `skill-designer` folder into your skills directory (`~/.codex/skills`, or `$CODEX_HOME/skills` if set):
+克隆仓库后，把 `skill-designer` 文件夹复制到对应平台的技能目录：
+After cloning, copy the `skill-designer` folder into the skills directory of your platform:
 
 ```bash
 git clone https://github.com/<your-username>/skill-designer.git
+
+# Codex：~/.codex/skills（或 $CODEX_HOME/skills）
 cp -r skill-designer/skill-designer ~/.codex/skills/
+
+# Claude Code：~/.claude/skills
+cp -r skill-designer/skill-designer ~/.claude/skills/
 ```
+
+其他支持 SKILL.md 的环境，把文件夹放到对应的技能目录即可。
+For any other SKILL.md-compatible runtime, place the folder into its skills directory.
 
 ## 使用 / Usage
 
@@ -45,14 +54,20 @@ cp -r skill-designer/skill-designer ~/.codex/skills/
 - "帮我设计一个 skill" / "设计一个整理报销单的技能"
 - "Use $skill-designer to design a custom skill for my workflow."
 
+对 Claude Code 说 / Ask Claude Code:
+
+- "帮我设计一个技能"
+- "Use the skill-designer skill to design a custom skill."
+
 技能会先收集必要需求，然后规划结构、脚手架生成、实现并校验，最后交付可直接安装的技能目录。
-The skill collects the essentials first, then plans, scaffolds, implements, and validates a ready-to-install skill folder.
+生成的 SKILL.md 兼容整个 SKILL.md 生态。
+The skill collects the essentials first, then plans, scaffolds, implements, and validates a ready-to-install skill folder. The generated SKILL.md works across the SKILL.md ecosystem.
 
 ## 开发 / Development
 
 ```bash
-# 生成新技能骨架 / scaffold a new skill
-python scripts/init_skill.py my-skill --path /tmp/skills --resources scripts,references
+# 生成新技能骨架（codex 生成 UI 元数据，claude 不生成）/ scaffold a new skill
+python scripts/init_skill.py my-skill --path /tmp/skills --resources scripts,references --platform all
 
 # 校验技能 / validate a skill
 python scripts/quick_validate.py /path/to/skill-folder
