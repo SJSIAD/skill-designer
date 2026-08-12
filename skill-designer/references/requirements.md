@@ -19,8 +19,9 @@ Collect the following from the user, in priority order. Stop once the core items
    - 有：规划 references/ 文档。 / Yes: plan a references/ document.
 6. 输出是否使用模板或样板文件？ / Templates or boilerplate in output?
    - 有：规划 assets/。 / Yes: plan assets/.
-7. 名称与位置 / Name and location
-   - 从动作推导小写连字符名称；默认安装到技能目录（~/.codex/skills）。 / Derive a hyphen-case name from the action; default install location is the skills directory (~/.codex/skills).
+7. 运行环境、名称与位置 / Runtime, name, and location
+   - 目标运行环境：Codex、Claude Code，还是其他支持 SKILL.md 的环境？ / Target runtime: Codex, Claude Code, or another SKILL.md-compatible environment?
+   - 从动作推导小写连字符名称；按环境放置：Codex ~/.codex/skills，Claude Code ~/.claude/skills。 / Derive a hyphen-case name from the action; place per runtime: ~/.codex/skills for Codex, ~/.claude/skills for Claude Code.
 
 ## 答案到设计决策的映射 / Mapping answers to design decisions
 
@@ -62,6 +63,6 @@ Collect the following from the user, in priority order. Stop once the core items
 
 ## 何时停止收集 / When to stop collecting
 
-- 已知触发词、输入、输出和所需资源。 / Trigger, inputs, outputs, and required resources are known.
+- 已知目标运行环境、触发词、输入、输出和所需资源。 / Target runtime, trigger, inputs, outputs, and required resources are known.
 - 能根据答案写出 frontmatter 描述。 / The description can be written from the answers.
 - 用户已给出覆盖核心流程的示例。 / The user already provided an example covering the core workflow.
