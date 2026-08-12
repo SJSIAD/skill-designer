@@ -4,7 +4,9 @@ Quick validation script for skills - minimal, dependency-free version.
 
 Validates SKILL.md frontmatter (name, description), naming rules, and
 description constraints without requiring PyYAML, so the skill works in
-any environment with a plain Python 3 runtime.
+any environment with a plain Python 3 runtime. The checks are compatible
+with both Codex and Claude Code skills (hyphen-case name up to 64
+characters, description up to 1024 characters, shared frontmatter keys).
 """
 
 import re
