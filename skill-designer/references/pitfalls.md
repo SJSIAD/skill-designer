@@ -47,6 +47,14 @@ Common mistakes when designing skills and how to avoid them. Review this list be
 | 技能里埋密钥、令牌或个人路径 / Embedded secrets, tokens, or personal paths | 泄露；别人用不了 / Leaks; breaks for other users | 用占位符；密钥不进技能 / Use placeholders; keep secrets out of the skill |
 | 破坏性操作没有护栏 / Destructive operations without guardrails | 用户数据丢失 / User data loss | 破坏性操作前要求明确确认 / Require explicit confirmation before destructive actions |
 
+## 生态兼容 / Ecosystem compatibility
+
+| 坑 / Pitfall | 后果 / Consequence | 规避 / How to avoid |
+| --- | --- | --- |
+| 只写死一个运行环境（路径、元数据）/ Hard-coding one runtime (paths, metadata) | 其他 SKILL.md 环境用不了 / Breaks in other SKILL.md runtimes | 安装目录按环境放置；UI 元数据设为可选 / Use per-runtime install dirs; make UI metadata optional |
+| frontmatter 使用环境专属键 / Runtime-specific frontmatter keys | 其他环境校验失败 / Fails validation elsewhere | 只用通用键：name、description、license、allowed-tools、metadata / Use only the shared keys |
+| 描述只含单一语言的触发词 / Triggers in one language only | 其他语言的用户触发不了 / Users of other languages cannot trigger it | 加入目标用户实际使用的触发词 / Include the trigger phrases users actually use |
+
 ## 流程 / Process
 
 | 坑 / Pitfall | 后果 / Consequence | 规避 / How to avoid |
