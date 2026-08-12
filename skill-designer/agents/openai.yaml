@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Designer · 技能设计师"
+  short_description: "从需求清单出发设计规范可安装的技能 (Design skills from requirements)"
+  default_prompt: "Use $skill-designer to design a custom skill. 使用 $skill-designer 设计一个自定义技能。"
