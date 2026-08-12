@@ -3,7 +3,7 @@
 Skill Initializer - Creates a new skill from template
 
 Usage:
-    init_skill.py <skill-name> --path <path> [--resources scripts,references,assets] [--examples] [--interface key=value]
+    init_skill.py <skill-name> --path <path> [--resources scripts,references,assets] [--platform codex|claude|all] [--examples] [--interface key=value]
 
 Examples:
     init_skill.py my-new-skill --path skills/public
@@ -11,6 +11,7 @@ Examples:
     init_skill.py my-api-helper --path skills/private --resources scripts --examples
     init_skill.py custom-skill --path /custom/location
     init_skill.py my-skill --path skills/public --interface short_description="Short UI label"
+    init_skill.py my-skill --path ~/.claude/skills --platform claude
 """
 
 import argparse
@@ -254,7 +255,7 @@ def create_resource_dirs(skill_dir, skill_name, skill_title, resources, include_
                 print("[OK] Created assets/")
 
 
-def init_skill(skill_name, path, resources, include_examples, interface_overrides):
+def init_skill(skill_name, path, resources, include_examples, interface_overrides, platform="all"):
     """
     Initialize a new skill directory with template SKILL.md.
 
@@ -295,14 +296,17 @@ def init_skill(skill_name, path, resources, include_examples, interface_override
         print(f"[ERROR] Error creating SKILL.md: {e}")
         return None
 
-    # Create agents/openai.yaml
-    try:
-        result = write_openai_yaml(skill_dir, skill_name, interface_overrides)
-        if not result:
+    # Create agents/openai.yaml (Codex/ChatGPT UI metadata; Claude does not need it)
+    if platform in ("codex", "all"):
+        try:
+            result = write_openai_yaml(skill_dir, skill_name, interface_overrides)
+            if not result:
+                return None
+        except Exception as e:
+            print(f"[ERROR] Error creating agents/openai.yaml: {e}")
             return None
-    except Exception as e:
-        print(f"[ERROR] Error creating agents/openai.yaml: {e}")
-        return None
+    else:
+        print("[OK] Skipped agents/openai.yaml (platform: claude)")
 
     # Create resource directories if requested
     if resources:
@@ -323,7 +327,10 @@ def init_skill(skill_name, path, resources, include_examples, interface_override
             print("2. Add resources to scripts/, references/, and assets/ as needed")
     else:
         print("2. Create resource directories only if needed (scripts/, references/, assets/)")
-    print("3. Update agents/openai.yaml if the UI metadata should differ")
+    if platform in ("codex", "all"):
+        print("3. Update agents/openai.yaml if the UI metadata should differ (Codex/ChatGPT only)")
+    else:
+        print("3. No UI metadata needed for Claude; install into ~/.claude/skills")
     print("4. Run the validator when ready to check the skill structure")
     print(
         "5. Forward-test complex skills with realistic user requests to ensure they work as intended"
@@ -342,6 +349,12 @@ def main():
         "--resources",
         default="",
         help="Comma-separated list: scripts,references,assets",
+    )
+    parser.add_argument(
+        "--platform",
+        default="all",
+        choices=["codex", "claude", "all"],
+        help="Target platform: codex (creates agents/openai.yaml), claude (no UI metadata), all (default)",
     )
     parser.add_argument(
         "--examples",
@@ -385,9 +398,10 @@ def main():
             print("   Examples: enabled")
     else:
         print("   Resources: none (create as needed)")
+    print(f"   Platform: {args.platform}")
     print()
 
-    result = init_skill(skill_name, path, resources, args.examples, args.interface)
+    result = init_skill(skill_name, path, resources, args.examples, args.interface, args.platform)
 
     if result:
         sys.exit(0)
